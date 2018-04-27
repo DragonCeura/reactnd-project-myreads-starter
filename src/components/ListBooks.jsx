@@ -2,24 +2,10 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 import Bookshelf from './Bookshelf'
+import { bookshelves } from './../utils/Utils'
 
 class ListBooks extends Component {
   render() {
-    const bookshelves = [
-      {
-        header: "Currently Reading",
-        key: "currentlyReading"
-      },
-      {
-        header: "Want to Read",
-        key: "wantToRead"
-      },
-      {
-        header: "Read",
-        key: "read"
-      }
-    ]
-
     return (
       <div className="list-books">
         <div className="list-books-title">
@@ -29,9 +15,9 @@ class ListBooks extends Component {
           <div>
             {bookshelves.map((bookshelf) => (
               <Bookshelf
+                key={bookshelf.value}
                 header={bookshelf.header}
-                key={bookshelf.key}
-                books={this.props.books.filter((book) => book.shelf === bookshelf.key)}
+                books={this.props.books.filter((book) => book.shelf === bookshelf.value)}
               />
             ))}
           </div>
@@ -40,7 +26,7 @@ class ListBooks extends Component {
           <Link to='/search'>Add a book</Link>
         </div>
       </div>
-      )
+    )
   }
 }
 
