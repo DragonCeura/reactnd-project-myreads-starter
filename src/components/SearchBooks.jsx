@@ -1,9 +1,15 @@
+// Libraries/Utilities
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import * as BooksAPI from '../utils/BooksAPI'
-
+// Components
 import Book from './Book'
 
 class SearchBooks extends Component {
+  static propTypes = {
+    books: PropTypes.array.isRequired,
+    shelfChanger: PropTypes.func.isRequired
+  }
 
   state = {
     searchResults: []
@@ -15,15 +21,13 @@ class SearchBooks extends Component {
         this.setState({
           searchResults: []
         })
-        return;
+        return
       }
 
       books.map((book) => {
-        book.shelf = (!this.props.books.find(bk => bk.id === book.id))
-          ?
+        if (!this.props.books.find(bk => bk.id === book.id))
           book.shelf = "none"
-          :
-          book.shelf
+        return book
       })
 
       this.setState(() => ({

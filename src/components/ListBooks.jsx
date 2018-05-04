@@ -1,19 +1,18 @@
+// Libraries/Utilities
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-
+// Components
 import Bookshelf from './Bookshelf'
 import { bookshelves } from './../utils/Utils'
 
 class ListBooks extends Component {
   static propTypes = {
-    books: PropTypes.array.isRequired
+    books: PropTypes.array.isRequired,
+    shelfChanger: PropTypes.func.isRequired
   }
 
   render() {
-    const shelves = bookshelves.map((bookshelf) =>
-      this.props.books.filter((book) => book.shelf === bookshelf.value))
-
     return (
       <div className="list-books">
         <div className="list-books-title">
