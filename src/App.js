@@ -22,16 +22,22 @@ class BooksApp extends React.Component {
   }
 
   updateBook = (book, shelf) => {
-    book.shelf = shelf
+    this.setState((prevState) => ({
+      books: prevState.books.map((bk) => {
+        if (bk.id === book.id)
+          bk.shelf = shelf
+        return bk
+      })
+    }))
     BooksAPI.update(book, shelf)
-      .then(
-        BooksAPI.getAll()
-          .then((books) => {
-            this.setState(() => ({
-              books: books
-            }))
-          })
-      )
+  }
+
+  addBook = (book, shelf) => {
+    book.shelf = shelf
+    this.setState((prevState) => ({
+      books: prevState.books.concat([book])
+    }))
+    BooksAPI.update(book, shelf)
   }
 
   render() {
@@ -46,7 +52,7 @@ class BooksApp extends React.Component {
         <Route exact path ='/search' render={({ history }) => (
           <SearchBooks
             shelfChanger={(book, shelf) => {
-              this.updateBook(book, shelf)
+              this.addBook(book, shelf)
               history.push('/')
             }}
             books={this.state.books}
