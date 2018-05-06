@@ -27,7 +27,8 @@ class SearchBooks extends Component {
         return
       }
 
-      // explicitly identify books as having "none" shelf if not in the provided books prop
+      // Explicitly identify books as having "none" shelf if not in the provided books prop
+      // Relevant with setting the initial value for the shelf changing dropdown in the Book component
       books.map((book) => {
         if (!this.props.books.find(bk => bk.id === book.id))
           book.shelf = "none"
