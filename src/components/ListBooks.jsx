@@ -2,9 +2,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
+import { bookshelves } from './../utils/Utils'
 // Components
 import Bookshelf from './Bookshelf'
-import { bookshelves } from './../utils/Utils'
 
 function ListBooks (props) {
   return (

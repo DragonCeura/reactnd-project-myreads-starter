@@ -1,6 +1,7 @@
 // Libraries/Utilities
 import React from 'react'
 import PropTypes from 'prop-types'
+import { bookshelves } from './../utils/Utils'
 
 function Book (props) {
   const imageUrl = props.book.imageLinks ? props.book.imageLinks.thumbnail : 'https://books.google.com/googlebooks/images/no_cover_thumb.gif'
@@ -16,9 +17,9 @@ function Book (props) {
             <select onChange={(event) => props.shelfChanger(props.book, event.target.value)}
               value={props.book.shelf}>
               <option value="moveTo" disabled>Move to...</option>
-              <option value="currentlyReading">Currently Reading</option>
-              <option value="wantToRead">Want to Read</option>
-              <option value="read">Read</option>
+              {bookshelves.map((bookshelf) => (
+                <option key={bookshelf.value} value={bookshelf.value}>{bookshelf.header}</option>
+              ))}
               <option value="none">None</option>
             </select>
           </div>
