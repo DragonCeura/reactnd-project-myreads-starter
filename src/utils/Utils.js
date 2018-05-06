@@ -1,3 +1,6 @@
+/**
+* @description static array of bookshelves and values the app will be using.
+*/
 export const bookshelves = [
   {
     header: "Currently Reading",

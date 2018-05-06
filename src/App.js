@@ -21,6 +21,11 @@ class BooksApp extends React.Component {
       })
   }
 
+  /**
+  * @description Handler for updating what shelf the given book is assigned to
+  * @param {object} book - The book object being updated
+  * @param {string} shelf - The desired shelf to update the book to be put to
+  */
   updateBook = (book, shelf) => {
     this.setState((prevState) => ({
       books: prevState.books.map((bk) => {
@@ -32,6 +37,11 @@ class BooksApp extends React.Component {
     BooksAPI.update(book, shelf)
   }
 
+  /**
+  * @description Handler for adding a new book to the list of books to be shelved
+  * @param {object} book - The book object being updated
+  * @param {string} shelf - The desired shelf to update the book to be put to
+  */
   addBook = (book, shelf) => {
     book.shelf = shelf
     this.setState((prevState) => ({

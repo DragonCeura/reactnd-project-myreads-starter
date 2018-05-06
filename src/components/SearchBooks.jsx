@@ -15,6 +15,9 @@ class SearchBooks extends Component {
     searchResults: []
   }
 
+  /**
+  * @description hanlder for querying the BooksAPI for new books to be added
+  */
   search = (query) => {
     BooksAPI.search(query).then((books) => {
       if (!books || books.error) {
@@ -24,12 +27,14 @@ class SearchBooks extends Component {
         return
       }
 
+      // explicitly identify books as having "none" shelf if not in the provided books prop
       books.map((book) => {
         if (!this.props.books.find(bk => bk.id === book.id))
           book.shelf = "none"
         return book
       })
 
+      // Only return/display new books
       this.setState(() => ({
         searchResults: books.filter((book) => book.shelf === "none")
       }))
