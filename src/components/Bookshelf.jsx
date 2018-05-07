@@ -4,14 +4,14 @@ import PropTypes from 'prop-types'
 // Components
 import Book from './Book'
 
-function Bookshelf (props) {
+function Bookshelf ({ header, books, shelfChanger }) {
   return (
     <div className="bookshelf">
-      <h2 className="bookshelf-title">{props.header}</h2>
+      <h2 className="bookshelf-title">{header}</h2>
       <div className="bookshelf-books">
         <ol className="books-grid">
-          {props.books.map((book) => (
-            <Book key={book.id} book={book} shelfChanger={props.shelfChanger} />
+          {books.map((book) => (
+            <Book key={book.id} book={book} shelfChanger={shelfChanger} />
           ))}
         </ol>
       </div>

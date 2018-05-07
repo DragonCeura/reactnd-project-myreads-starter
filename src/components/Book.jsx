@@ -3,7 +3,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { bookshelves } from './../utils/Utils'
 
-function Book (props) {
+function Book ({ book, shelfChanger }) {
   const imageUrl = props.book.imageLinks ? props.book.imageLinks.thumbnail : 'https://books.google.com/googlebooks/images/no_cover_thumb.gif'
   return (
     <li>
