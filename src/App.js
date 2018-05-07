@@ -12,6 +12,8 @@ class BooksApp extends React.Component {
     books: []
   }
 
+  booksAPIRequestPending = false
+
   componentDidMount() {
     BooksAPI.getAll()
       .then((books) => {
@@ -22,11 +24,37 @@ class BooksApp extends React.Component {
   }
 
   /**
+  * @description Helper function wrapping around the BooksAPI.update() function
+  * and catch any errors returned by the API.
+  * @param {object} book - The book object being updated
+  * @param {string} shelf - The desired shelf to update the book to be put to
+  */
+  booksAPIUpdate = (book, shelf, currentBooks) => {
+    // Start pending API call
+    this.booksAPIRequestPending = true
+    BooksAPI.update(book, shelf)
+      .catch(() => {
+        this.setState({
+          books: currentBooks
+        })
+      })
+      .then(() => {
+        this.booksAPIRequestPending = false
+      })
+  }
+
+  /**
   * @description Handler for updating what shelf the given book is assigned to
   * @param {object} book - The book object being updated
   * @param {string} shelf - The desired shelf to update the book to be put to
   */
   updateBook = (book, shelf) => {
+    if (this.booksAPIRequestPending)
+      return
+
+    const currentBooks = this.state.books
+
+    // Optimistic update
     this.setState((prevState) => ({
       books: prevState.books.map((bk) => {
         if (bk.id === book.id)
@@ -34,7 +62,9 @@ class BooksApp extends React.Component {
         return bk
       })
     }))
-    BooksAPI.update(book, shelf)
+
+    // Async API update
+    this.booksAPIUpdate(book, shelf, currentBooks)
   }
 
   /**
@@ -43,11 +73,20 @@ class BooksApp extends React.Component {
   * @param {string} shelf - The desired shelf to update the book to be put to
   */
   addBook = (book, shelf) => {
+    if (this.booksAPIRequestPending)
+      return
+
+    // Current state snapshot
+    const currentBooks = this.state.books
+
+    // Optimistic update
     book.shelf = shelf
     this.setState((prevState) => ({
       books: prevState.books.concat([book])
     }))
-    BooksAPI.update(book, shelf)
+
+    // Async API update
+    this.booksAPIUpdate(book, shelf, currentBooks)
   }
 
   render() {
