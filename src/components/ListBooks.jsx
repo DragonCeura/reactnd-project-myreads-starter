@@ -6,7 +6,7 @@ import { bookshelves } from './../utils/Utils'
 // Components
 import Bookshelf from './Bookshelf'
 
-function ListBooks (props) {
+function ListBooks ({ books, shelfChanger }) {
   return (
     <div className="list-books">
       <div className="list-books-title">
@@ -18,8 +18,8 @@ function ListBooks (props) {
             <Bookshelf
               key={bookshelf.value}
               header={bookshelf.header}
-              books={props.books.filter((book) => book.shelf === bookshelf.value)}
-              shelfChanger={props.shelfChanger}
+              books={books.filter((book) => book.shelf === bookshelf.value)}
+              shelfChanger={shelfChanger}
             />
           ))}
         </div>

@@ -13,37 +13,62 @@ class SearchBooks extends Component {
   }
 
   state = {
+    error: undefined,
+    query: '',
     searchResults: []
   }
 
   /**
-  * @description hanlder for querying the BooksAPI for new books to be added
+  * @description handler for querying the BooksAPI for new books to be added
   */
   search = (query) => {
+    query = query.trim()
+    this.setState(() => ({
+      query: query
+    }))
+
     BooksAPI.search(query).then((books) => {
-      if (!books || books.error) {
+      if (!books) {
         this.setState({
+          error: undefined,
           searchResults: []
         })
         return
       }
 
-      // Explicitly identify books as having "none" shelf if not in the provided books prop
-      // Relevant with setting the initial value for the shelf changing dropdown in the Book component
-      books.map((book) => {
-        if (!this.props.books.find(bk => bk.id === book.id))
-          book.shelf = "none"
-        return book
-      })
+      if (books.error) {
+        this.setState({
+          error: books.error,
+          searchResults: []
+        })
+        return
+      }
 
-      // Return all valid books
-      this.setState(() => ({
-        searchResults: books
-      }))
+      if (query === this.state.query) {
+        // Explicitly identify books as having "none" shelf if not in the provided books prop
+        // Relevant with setting the initial value for the shelf changing dropdown in the Book component
+        books = books.map((book) => {
+          if (!this.props.books.find(bk => bk.id === book.id)) {
+            book.shelf = "none"
+          } else {
+            book.shelf = this.props.books.find(bk => bk.id === book.id).shelf
+          }
+          return book
+        })
+
+        // Return all valid books
+        this.setState({
+          error: undefined,
+          searchResults: books
+        })
+      }
     })
   }
 
   render() {
+    const { error, query, searchResults } = this.state
+    const { shelfChanger } = this.props
+
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -58,8 +83,11 @@ class SearchBooks extends Component {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            {this.state.searchResults.map((book) => (
-              <Book key={book.id} book={book} shelfChanger={this.props.shelfChanger} />
+            {error && (
+              <li className="error-message">Books not found using search query: {query}</li>
+            )}
+            {searchResults.map((book) => (
+              <Book key={book.id} book={book} shelfChanger={shelfChanger} />
             ))}
           </ol>
         </div>

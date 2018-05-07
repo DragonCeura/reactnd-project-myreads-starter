@@ -24,10 +24,12 @@ class BooksApp extends React.Component {
   }
 
   /**
-  * @description Helper function wrapping around the BooksAPI.update() function
+  * @description Helper function wrapping around the BooksAPI.update() call
   * and catch any errors returned by the API.
   * @param {object} book - The book object being updated
   * @param {string} shelf - The desired shelf to update the book to be put to
+  * @param {array} currentBooks - Snapshot of books state to revert to if
+  * BooksAPI.update() call fails.
   */
   booksAPIUpdate = (book, shelf, currentBooks) => {
     // Start pending API call
